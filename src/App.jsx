@@ -1,23 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
 import TodoList from './TodoList';
 
-const taskList = [
-  {
-    id: 1,
-    title: 'Создать проект React',
-  },
-  {
-    id: 2,
-    title: 'Подготовить данные нашего списка задач',
-  },
-];
-
-let nextId = 3;
-
 function App() {
-  const [todoList, setTodoList] = useState(taskList);
+  const [todoList, setTodoList] = useState([]);
   const [inputText, setInputText] = useState('');
+
+  let nextId = todoList.length > 0 ? ++todoList[todoList.length - 1].id : 3;
+
+  useEffect(() => {
+    let ignore = false;
+
+    axios.get('https://629470d963b5d108c18b87da.mockapi.io/todos').then((response) => {
+      if (response.data.length > 0 && !ignore) {
+        setTodoList(response.data);
+      }
+    });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleAddTodoClick = () => {
     setTodoList([...todoList, { id: nextId++, title: inputText }]);
