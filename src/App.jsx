@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import './App.css';
 import TodoList from './TodoList';
 
@@ -12,11 +11,32 @@ function App() {
   useEffect(() => {
     let ignore = false;
 
-    axios.get('https://629470d963b5d108c18b87da.mockapi.io/todos').then((response) => {
-      if (response.data.length > 0 && !ignore) {
-        setTodoList(response.data);
-      }
-    });
+    // Или можно использовать Wretch https://github.com/elbywan/wretch
+    fetch('https://629470d963b5d108c18b87da.mockapi.io/todos')
+      .then((res) => {
+        if (!res.ok) {
+          switch (res.status) {
+            case 400:
+              throw new Error('Bad request');
+
+            case 401:
+              throw new Error('Unauthorized');
+
+            case 404:
+              throw new Error('Not found');
+
+            case 500:
+              throw new Error('Internal server error');
+          }
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data.length > 0 && !ignore) {
+          setTodoList(data);
+        }
+      })
+      .catch((err) => console.error(err));
 
     return () => {
       ignore = true;
