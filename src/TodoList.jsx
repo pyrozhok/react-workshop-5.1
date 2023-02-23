@@ -7,7 +7,11 @@ function TodoList(props) {
   return (
     <div className="todo-list">
       <h2>Задачи</h2>
-      <ul className="todo-list__items">{todoList}</ul>
+      {todoList.length > 0 ? (
+        <ul className="todo-list__items">{todoList}</ul>
+      ) : (
+        <div>Пока нет задач</div>
+      )}
     </div>
   );
 }

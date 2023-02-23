@@ -1,23 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import TodoList from './TodoList';
 
-const taskList = [
-  {
-    id: 1,
-    title: 'Создать проект React',
-  },
-  {
-    id: 2,
-    title: 'Подготовить данные нашего списка задач',
-  },
-];
-
-let nextId = 3;
+let nextId = 1;
 
 function App() {
-  const [todoList, setTodoList] = useState(taskList);
+  const [todoList, setTodoList] = useState([]);
   const [inputText, setInputText] = useState('');
+
+  useEffect(() => {
+    if (todoList.length > 0) localStorage.setItem('tasks', JSON.stringify(todoList));
+  }, [todoList]);
+
+  useEffect(() => {
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+    if (tasks) {
+      setTodoList(tasks);
+    }
+  }, []);
 
   const handleAddTodoClick = () => {
     setTodoList([...todoList, { id: nextId++, title: inputText }]);
