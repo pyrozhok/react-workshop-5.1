@@ -1,8 +1,12 @@
 import './todo-list.css';
 function TodoList(props) {
-  const { data } = props;
+  const { data, onDelete } = props;
 
-  const todoList = data.map((todo) => <li key={todo.id}>{todo.title}</li>);
+  const todoList = data.map((todo) => (
+    <li key={todo.id}>
+      {todo.title} <button onClick={() => onDelete(todo.id)}>Удалить</button>
+    </li>
+  ));
 
   return (
     <div className="todo-list">

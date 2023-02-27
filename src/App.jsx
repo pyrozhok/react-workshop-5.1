@@ -48,6 +48,11 @@ function App() {
     setInputText('');
   };
 
+  const handleRemoveTodoClick = (taskId) => {
+    const tasks = todoList.filter((task) => task.id !== taskId);
+    setTodoList(tasks);
+  };
+
   return (
     <div className="app">
       <h1>Список задач</h1>
@@ -63,7 +68,7 @@ function App() {
         </button>
       </div>
       <br />
-      <TodoList data={todoList} />
+      <TodoList data={todoList} onDelete={handleRemoveTodoClick} />
     </div>
   );
 }
