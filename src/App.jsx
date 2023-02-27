@@ -2,22 +2,22 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import TodoList from './TodoList';
 
-let nextId = 1;
-
 function App() {
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState(() => {
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+    if (tasks && tasks.length > 0) {
+      return tasks;
+    }
+
+    return [];
+  });
   const [inputText, setInputText] = useState('');
 
-  useEffect(() => {
-    if (todoList.length > 0) localStorage.setItem('tasks', JSON.stringify(todoList));
-  }, [todoList]);
+  let nextId = todoList.length > 0 ? ++todoList[todoList.length - 1].id : 1;
 
   useEffect(() => {
-    const tasks = JSON.parse(localStorage.getItem('tasks'));
-    if (tasks) {
-      setTodoList(tasks);
-    }
-  }, []);
+    localStorage.setItem('tasks', JSON.stringify(todoList));
+  }, [todoList]);
 
   const handleAddTodoClick = () => {
     setTodoList([...todoList, { id: nextId++, title: inputText }]);
