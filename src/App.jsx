@@ -6,7 +6,7 @@ function App() {
   const [todoList, setTodoList] = useState([]);
   const [inputText, setInputText] = useState('');
 
-  let nextId = todoList.length > 0 ? ++todoList[todoList.length - 1].id : 3;
+  let nextId = todoList.length > 0 ? ++todoList[todoList.length - 1].id : 1;
 
   useEffect(() => {
     let ignore = false;
