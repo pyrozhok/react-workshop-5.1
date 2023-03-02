@@ -1,3 +1,13 @@
 .todo-list__items {
   text-align: left;
 }
+
+.task-body {
+  cursor: pointer;
+}
+
+.task-body-favourite {
+  cursor: pointer;
+  font-weight: 500;
+  color: gold;
+}

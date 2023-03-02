@@ -4,6 +4,7 @@ import TodoList from './TodoList';
 
 function App() {
   const [todoList, setTodoList] = useState([]);
+  const [favouriteTodoList, setFavouriteTodoList] = useState([]);
   const [inputText, setInputText] = useState('');
 
   let nextId = todoList.length > 0 ? ++todoList[todoList.length - 1].id : 1;
@@ -53,6 +54,23 @@ function App() {
     setTodoList(tasks);
   };
 
+  const handleMarkTodoFavourite = (task) => {
+    /* Переменная для проверки, есть ли задача в избранном */
+    const isTaskFavourite = favouriteTodoList.find((favouriveTask) => favouriveTask.id === task.id);
+
+    /* Задачи нет в избранном — добавляем ее */
+    if (!isTaskFavourite) {
+      setFavouriteTodoList([...favouriteTodoList, task]);
+      return;
+    }
+
+    /* Задача есть в избранном — убираем ее */
+    const favouriveTasks = favouriteTodoList.filter(
+      (favouriveTask) => favouriveTask.id !== task.id
+    );
+    setFavouriteTodoList(favouriveTasks);
+  };
+
   return (
     <div className="app">
       <h1>Список задач</h1>
@@ -68,7 +86,12 @@ function App() {
         </button>
       </div>
       <br />
-      <TodoList data={todoList} onDelete={handleRemoveTodoClick} />
+      <TodoList
+        data={todoList}
+        favourites={favouriteTodoList}
+        onDelete={handleRemoveTodoClick}
+        onMarkFavourite={handleMarkTodoFavourite}
+      />
     </div>
   );
 }
